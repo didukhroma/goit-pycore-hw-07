@@ -1,6 +1,8 @@
 
-from .input_err import input_error
 from AddressBook import AddressBook, Record
+
+from .input_err import input_error
+from .get_upcoming_birthdays import get_upcoming_birthdays
 
 
 @input_error
@@ -41,7 +43,7 @@ def show_all(book: AddressBook)->str:
     if not len(contacts):
         return "List is empty.Please add contacts"   
 
-    return "\n".join([str(record) for record in contacts])
+    return contacts
   
 
 @input_error
@@ -57,10 +59,35 @@ def show_phone(args:list,book: AddressBook)->str:
     
 @input_error
 def add_birthday(args, book: AddressBook):
-    pass
+    if not len(args) or len(args) != 2:
+        raise ValueError("Please add all arguments: name of user for this command.")
+    name,birthday,*_ = args
+    record = book.find(name)
+    if record is None:
+        raise KeyError("Please enter a valid name of contact.")
+    record.add_birthday(birthday)
+    return f"Birthday date to contact {name.capitalize()} added."
+
+    
 @input_error
-def show_birthday(args, book: AddressBook):
-    pass
+def show_birthday(args, book: AddressBook)->str:
+    if not len(args):
+        raise ValueError("Please add all arguments: name of user for this command.")    
+      
+    name, *_ = args
+    record = book.find(name)
+    if record is None:
+        raise KeyError("Please enter a valid name of contact.")
+    birthday = record.show_birthday()
+    if birthday is None:
+        return f"Birthday date for contact {name.capitalize()} is not added."
+    return f"Birthday date for contact {name.capitalize()} is {birthday}."
+
+    
 @input_error  
-def show_birthdays(args, book: AddressBook):
-    pass
+def show_upcoming_birthdays( book: AddressBook)->str:
+    upcoming_birthdays = book.get_upcoming_birthdays()   
+    result = get_upcoming_birthdays(upcoming_birthdays)
+    if  not len(result):
+        return "No birthdays in next week."    
+    return result

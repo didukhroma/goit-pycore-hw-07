@@ -1,5 +1,5 @@
-from utility import parse_input,add_contact,change_phone,show_all,show_phone,add_birthday,show_birthday,show_birthdays
-from AddressBook import AddressBook, Record
+from utility import parse_input,add_contact,change_phone,show_all,show_phone,add_birthday,show_birthday,show_upcoming_birthdays
+from AddressBook import AddressBook
 
 def main():
     book = AddressBook()
@@ -28,15 +28,15 @@ def main():
         
         elif command == "all":
             print(show_all(book))
-        # in progress
+        
         elif command == "add-birthday":
             print(add_birthday(args, book))
-        # in progress
+        
         elif command == "show-birthday":
             print(show_birthday(args, book))
         # in progress
         elif command == "birthdays":
-            print(show_birthdays(book))
+            print(show_upcoming_birthdays(book))
         
         else:
             print("Invalid command.")
@@ -44,5 +44,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
